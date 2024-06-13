@@ -46,7 +46,8 @@ fn compare_piece_hashes(source_torrent_info: &Metainfo, dest_torrent_info: &Meta
         *piece_map.entry(hash).or_insert(0) += 1;
     }
 
-    let mut matches = 0;
+    let mut matches: u32 = 0;
+    let mut total_pieces: u32 = 0;
     // compare with pieces from dest torrent;
     for (i, hash) in dest_pieces.enumerate()
     {
@@ -55,7 +56,9 @@ fn compare_piece_hashes(source_torrent_info: &Metainfo, dest_torrent_info: &Meta
             println!("Matching Piece: {} : {:?}", i, hex::encode(hash));
             matches += 1;
         }
+        total_pieces += 1;
     }
 
-    println!("Comparison complete. Found {} matches", matches);
+    println!("Comparison complete. Found {} matches out of {} pieces", matches, total_pieces);
+    println!("Total Matchrate : {:.2}%", (100.0 * matches as f64) / total_pieces as f64);
 }
